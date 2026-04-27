@@ -70,4 +70,9 @@ def play():
         return f"Congratulations! It took you {attempts} guess(es) to guess the number."
 
 if __name__ == "__main__":
-    print(play())
+    while True:
+        print(play())
+        again = input("Would you like to play again? (y/n): ").strip().lower()
+        if again != "y":
+            print("Thanks for playing!")
+            break
