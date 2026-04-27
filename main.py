@@ -1,7 +1,7 @@
 import random
 
 # Function for getting a random number
-def get_random(low: int = 1, high: int = 100) -> int:
+def get_random(low, high) -> int:
     num = random.randint(low, high)
     return num
 
@@ -9,7 +9,7 @@ def get_random(low: int = 1, high: int = 100) -> int:
 def get_guess() -> int:
     while True:
         try:
-            guess = int(input("Enter a guess 1-100: "))
+            guess = int(input("Enter a guess: "))
         except ValueError:
             print("Please enter an integer")
             continue
@@ -25,10 +25,23 @@ def feedback(guess: int, target: int) -> str:
         return "Too high"
     else:
         return "Correct!"
+    
+# Function to create different game difficulties
+def difficulty():
+    n = int(input("Choose a difficulty level (1-3): "))
+    if n == 1:
+        return get_random(1, 10)
+    elif n == 2:
+        return get_random(1, 50)
+    elif n == 3:
+        return get_random(1, 100)
+    else:
+        print("Invalid difficulty level. Defaulting to level 1.")
+        return get_random(1, 10)
 
 # Function to create and play the game
 def play():
-    n = get_random()
+    n = difficulty()
     attempts = 0
     while True:
         attempts += 1
