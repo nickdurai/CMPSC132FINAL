@@ -7,7 +7,6 @@ guessed.
 This is a simple but effective project to practice logic building, loops, and input handling.
 
 User is allowed multiple attempts to guess the number
-• Provide feedback:
 o “Too high”: If the guess is greater than the number generated, it prompts the
 user to guess a lower number.
 o “Too low”: If the guess is lower than the number generated, it prompts the
