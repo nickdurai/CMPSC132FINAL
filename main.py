@@ -1,23 +1,19 @@
 import random
 
-# Function for getting a random number
-def get_random(low, high) -> int:
-    num = random.randint(low, high)
-    return num
+def get_random(low: int, high: int) -> int:
+    return random.randint(low, high)
 
-# Function for getting the users input (guess)
-def get_guess() -> int:
+def get_guess(low: int, high: int) -> int:
     while True:
         try:
-            guess = int(input("Enter a guess: "))
+            guess = int(input(f"Enter a guess ({low}-{high}): "))
         except ValueError:
-            print("Please enter an integer")
+            print("Please enter an integer.")
             continue
-        if 1 <= guess <= 100:
+        if low <= guess <= high:
             return guess
-        print("Please enter a number between 1 and 100")
+        print(f"Please enter a number between {low} and {high}.")
 
-# Function for feedback
 def feedback(guess: int, target: int) -> str:
     if guess < target:
         return "Too low"
@@ -25,49 +21,41 @@ def feedback(guess: int, target: int) -> str:
         return "Too high"
     else:
         return "Correct!"
-    
-# Function to create different game difficulties
-def difficulty():
-    n = int(input("Choose a difficulty level (1-3): "))
-    if n == 1:
-        return get_random(1, 10)
-    elif n == 2:
-        return get_random(1, 50)
-    elif n == 3:
-        return get_random(1, 100)
-    else:
-        print("Invalid difficulty level. Defaulting to level 1.")
-        return get_random(1, 10)
-    
-# Function to create guess limit
-def limit(diff: int) -> int:
-    if diff == 1:
-        return 5
-    elif diff == 2:
-        return 10
-    elif diff == 3:
-        return 15
-    else:
-        return 5
 
-# Function to create and play the game
+def difficulty() -> int:
+    while True:
+        try:
+            n = int(input("Choose a difficulty level (1-3): "))
+        except ValueError:
+            print("Please enter an integer.")
+            continue
+        if 1 <= n <= 3:
+            return n
+        print("Invalid difficulty level, please enter 1, 2, or 3.")
+
+def limit(diff: int) -> int:
+    return {1: 5, 2: 10, 3: 15}.get(diff, 5)
+
 def play():
     attempts = 0
-    n = difficulty()
-    max_attempts = limit(n)
-    while True and attempts < max_attempts:
+    diff = difficulty()
+    ranges = {1: (1, 10), 2: (1, 50), 3: (1, 100)}
+    low, high = ranges[diff]
+    n = get_random(low, high)
+    max_attempts = limit(diff)
+    guess = None
+
+    while attempts < max_attempts:
         attempts += 1
-        guess = get_guess()
+        guess = get_guess(low, high)
         print(feedback(guess, n))
         if guess == n:
             break
-        else:
-            print(f"Try again! You have {max_attempts - attempts} attempts left.")
+        print(f"You have {max_attempts - attempts} attempt(s) left.")
 
-    if attempts == max_attempts and guess != n:
+    if guess != n:
         return f"You lose! The correct number was {n}."
-    else:
-        return f"Congratulations! It took you {attempts} guess(es) to guess the number."
+    return f"Congratulations! It took you {attempts} guess(es)."
 
 if __name__ == "__main__":
     while True:
