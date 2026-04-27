@@ -38,19 +38,36 @@ def difficulty():
     else:
         print("Invalid difficulty level. Defaulting to level 1.")
         return get_random(1, 10)
+    
+# Function to create guess limit
+def limit(diff: int) -> int:
+    if diff == 1:
+        return 5
+    elif diff == 2:
+        return 10
+    elif diff == 3:
+        return 15
+    else:
+        return 5
 
 # Function to create and play the game
 def play():
-    n = difficulty()
     attempts = 0
-    while True:
+    n = difficulty()
+    max_attempts = limit(n)
+    while True and attempts < max_attempts:
         attempts += 1
         guess = get_guess()
         print(feedback(guess, n))
         if guess == n:
             break
+        else:
+            print(f"Try again! You have {max_attempts - attempts} attempts left.")
 
-    return f"Congratulations! It took you {attempts} tries to guess the number."
+    if attempts == max_attempts and guess != n:
+        return f"You lose! The correct number was {n}."
+    else:
+        return f"Congratulations! It took you {attempts} guess(es) to guess the number."
 
 if __name__ == "__main__":
     print(play())
